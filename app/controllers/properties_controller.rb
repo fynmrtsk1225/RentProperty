@@ -7,6 +7,7 @@ class PropertiesController < ApplicationController
   
   def new
     @property = Property.new
+    2.times { @property.stations.build }
     render :index and return if params[:back]
   end
   
@@ -24,6 +25,7 @@ class PropertiesController < ApplicationController
   
   
   def edit
+    @property.stations.index_by+1.times { @property.stations.build }
   end
 
   def update
@@ -42,7 +44,7 @@ class PropertiesController < ApplicationController
   private
 
   def property_params
-    params.require(:property).permit(%i[name price address age remarks])
+    params.require(:property).permit(:name, :price, :address, :age, :remarks, stations_attributes: [:id, :train_name, :station_name, :walk_minutes, :_destroy])
   end
 
   def set_property
